@@ -1,0 +1,48 @@
+﻿<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Online/Events/SharewebManageEvents.js"></script>
+<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Templates/HHHH-EditSharewebItem.js"></script>
+
+
+<div ng-controller="ManageEventsController" ng-cloak class="tiles_image">
+    <div class="panel panel-default">
+        <div class="panel-title">
+
+
+            <h3>
+                Create New Event for {{subSiteUrl}}
+                <!-- <span class="pull-right col-sm-1"><page-settings-info webpartid="'sharewebCreateEventsPopup'"></page-settings-info></span> -->
+            </h3>
+
+        </div>
+        <div class="modal-body">
+            <div class="container tab-content panel-padding">
+                <ng-form name="linkNewForm" novalidate role="form">
+
+
+                    <div class="col-sm-8 padL-0 ">
+                        <label class="full_width" ng-bind-html="GetColumnDetails('Title') | trustedHTML"></label>
+                        <input id="linkTitle" ng-required="true" class="form-control" type="text" placeholder="Title"
+                            ng-model="Title" autocomplete="off">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="col-sm-5 padL-0 ">
+                            <label class="full_width" ng-bind-html="GetColumnDetails('StartDate') | trustedHTML"></label>
+                            <input type="text" autocomplete="off" title="Start Date" placeholder="DD/MM/YYYY"
+                                class="form-control" id="txtEventDate" ng-model="EventDate" />
+                        </div>
+                        <div class="col-sm-5 PadR0">
+                            <label class="full_width" ng-bind-html="GetColumnDetails('EndDate') | trustedHTML"></label>
+                            <input type="text" autocomplete="off" title="End Date" placeholder="DD/MM/YYYY"
+                                class="form-control" id="txtEndDate" ng-model="EndDate" />
+                        </div>
+                    </div>
+                </ng-form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="reset" class="btn btn-primary " ng-disabled="linkNewForm.$error.required"
+                ng-click="CreateEventItem()">Create Event</button>
+
+        </div>
+    </div>
+
+</div>

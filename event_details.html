@@ -1,0 +1,119 @@
+<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Online/Events/event_details.js"></script>
+<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Templates/HHHH-EditSharewebItem.js"></script>
+<style>
+    /***this css is used for onlythis page******/
+    .pagetitleheader {
+        display: none !important;
+    }
+</style>
+<div ng-controller="eventdetails" ng-cloak>
+    <div>
+
+        <div class="{{IsPageContentFullWidth==false?'col-sm-12 ':'col-sm-8 '}}">
+            <div class="col-md-12 no-padding publicationItem ">
+                <div class="col-sm-12  mt-10 mb-10">
+                    <div class="col-sm-9 padL-0 pull-left">
+                        <span class="P_icon">
+                            <img ng-if="subSiteUrl == 'KSL'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/KSL/PublishingImages/Logos/KSL_icon.png">
+                            <img ng-if="subSiteUrl == 'GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                        </span>
+                        <img style="width:25px;padding-right:5px;"
+                             ng-src="https://www.shareweb.ch/site/Joint/SiteCollectionImages/ICONS/siteIcons/icon_calendar.png">
+                        
+                        <!-- <span ng-if="StartDate != undefined && Item.EndDate !=undefined &&  StartDate == Item.EndDate && Item.Location !=undefined">
+                            {{Item.EventDate | date:'dd MMMM y'}} <span ng-if="Item.Location !=undefined && Item.IsOnline !=true">in</span>
+                            {{Item.Location}}
+                        </span>
+                        <span ng-show="StartDate !=undefined && Item.EndDate !=undefined  && StartDate != Item.EndDate && Item.Location !=undefined">
+                            {{Item.EventDate | date:'dd MMMM'}} to {{Item.EndDate1 | date:'dd MMMM y'}} <span ng-if="Item.Location !=undefined && Item.IsOnline !=true">in</span> {{Item.Location}}
+                        </span>
+                        <span ng-show="StartDate !=undefined && Item.EndDate == undefined  && StartDate !=Item.EndDate && Item.Location !=undefined">
+                            {{Item.EventDate | date:'dd MMMM y'}} <span ng-if="Item.Location !=undefined && Item.IsOnline !=true">in</span>
+                            {{Item.Location}}
+                        </span> -->
+                        <span>
+                            {{Item.EventDate | date:'dd MMMM y'}}
+                        </span>
+                        <!-- <span ng-if="StartDate != undefined && Item.EndDate !=undefined &&  StartDate != Item.EndDate && Item.Location ==undefined">
+                            {{Item.EventDate | date:'dd MMMM'}} to {{Item.EndDate1 | date:'dd MMMM y'}}
+                        </span> -->
+                        
+                        <img ng-if="lang=='Fr' && (Item.OtherLanguageTitle !=undefined || Item.OtherLanguageDescription !=undefined)" ng-click="ChangeDescription('Fr')" class="lIcon"
+                             ng-src="{{baseUrl}}/SiteCollectionImages/Flags/languages/icon_language_en.jpg" />
+                        <img ng-if="lang=='en-us' && (Item.OtherLanguageTitle ==undefined || Item.OtherLanguageDescription !=undefined)" ng-click="ChangeDescription('en-us')" class="lIcon"
+                             ng-src="{{baseUrl}}/SiteCollectionImages/Flags/languages/icon_language_fr.jpg" />
+                        <a ng-if="isOwner" class="hreflink"
+                           ng-click="editSharewebItem(Item.ID, SitesConfig.SiteUrl, 'Event')">
+                           <img ng-src="/_layouts/images/edititem.gif">
+                        </a>
+                    </div>
+                    <div class="col-sm-3 pull-right no-padding">
+                        <a class="pull-right" ng-href="{{siteUrl}}/SitePages/Events-Home.aspx">
+                            Back to all
+                            Events
+                        </a>
+                    </div>
+                    <div class="col-sm-12 padding-0">
+                        <h5 class="newstitle mb-0 ng-binding">
+                            {{Item.Title}}
+                        </h5>
+                    </div>
+                    <div ng-if="Item.Item_x0020_Cover == undefined" class="col-sm-12">
+                        <div class="labeltext fixxd">
+                            <span ng-bind-html="Item.EventDescription | trustedHTML"></span>
+                        </div>
+                    </div>
+                    <div ng-if="Item.Item_x0020_Cover != undefined" class="col-sm-12">
+                        <div class="col-sm-2" id="imagedetail">
+                            <img class="image" ng-src="{{Item.Item_x0020_Cover}}">
+                        </div>
+                        <div id="marg-p">
+                            <span ng-bind-html="Item.EventDescription | trustedHTML"></span>
+                        </div>
+                    </div>
+                    <div ng-if="Item.Description != undefined" class="col-sm-12">
+                        <span ng-bind-html="Item.Description | trustedHTML"></span>
+                    </div>
+                    <div class=" col-md-12 ItemInfo" style="padding-top:15px;">
+                        <div>
+                            Created <span ng-bind="Item.Created | date:'dd/MM/yyyy'"></span> by <span class="footerUsercolor">{{Item.Author.Title}}</span>
+                        </div>
+                        <div>
+                            Last modified <span ng-bind="Item.Modified | date:'dd/MM/yyyy hh:mm'"></span> by <span class="footerUsercolor">{{Item.Editor.Title}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="col-md-12 padL-0 PadR0 mt-10">
+                <shareweb-documents-temp webpartid="'DynamicProfileRelevantDocuments'"></shareweb-documents-temp>
+            </div>
+        </div>
+
+
+        <div ng-show="IsPageContentFullWidth==true" class="col-md-4">
+            <div class="panel panel-default displayhide" ng-show="isOwner && Profile.ProfileType!='Static Pages'">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Add & Connect Tool
+                        <span class="pull-right font13">                    
+                            <page-settings-info webpartid="'sharewebAnCToolPopup '"></page-settings-info>
+                        </span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class=" col-sm-12 Doc-align inner-tabb">
+
+                        <a ng-if="currentuser != undefined" class="hreflink padding-left" ng-click="openAncTool();">
+                            Click here to add more content
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <span class="displayhide" ng-show="isOwner==true && Profile.ProfileType!='Static Pages'">
+            </span>
+        </div>
+    </div>
+</div>

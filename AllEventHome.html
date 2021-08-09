@@ -1,0 +1,174 @@
+﻿<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Online/Events/AllEventHome.js"></script>
+<script src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/Style%20Library/js/angular/Templates/HHHH-EditSharewebItem.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$("#tabs").tabs();
+        //$("#Eventstabs").tabs();
+    });
+</script>
+<style>
+    .dynamic {
+        border-left: 1px solid #ccc;
+    }
+    .news-tabs .exTab3 .nav-pills>li>a{padding: 9px 15px;}
+</style>
+<div class="news-tabs {{$root.ProfileParentTitle.Title}}" ng-controller="AllEventsController"  ng-cloak>
+    <div class="col-sm-12 padL-0 PadR0">
+        <div class="panel-body">
+            <shareweb-login-message></shareweb-login-message>
+            <!--start of Dynamic Profile-->
+            <div ng-show="Profile != undefined">
+                <div class="col-sm-9 padL-0 PadR0" style="padding-right:10px!important;">
+                    <h1 class="pagetitle Title" id="pageTitle">
+                        <span>
+                            <img ng-if="Profile.Item_x0020_Cover != null" class="Doc-align options" ng-src="{{Profile.ItemCover}}?RenditionID=14">
+                        </span>
+                        {{Profile.Page_x002d_Title}} - Events
+                    </h1>
+                    <div>
+                        <h4 ng-if="Profile.Sub_x002d_Title != undefined">
+                            <span id="spnsubtopic" class="headerblog blocks">
+                                {{Profile.Sub_x002d_Title}}
+                                <a ng-if="currentUserId != undefined" class="hreflink padding-left" ng-click="EditProfileContent(Profile.ID)">
+                                    <img ng-src="/_layouts/images/edititem.gif">
+                                </a>
+                            </span>
+                        </h4>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="pagecolor form-group" style="padding:5px;">
+                        <span id="pageContent" ng-bind-html="Profile.PageContent_x0028_Profiles_x0029 | trustedHTML"></span>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <!--  start Events tabs -->
+            <div id="Eventstabs" class="exTab3">
+                <ul class="nav nav-pills">
+                    <li class="dynamic {{$index==tabsIndex?active:''}}" ng-click="childsshow(tab.Title)" ng-repeat="tab in yearTabItems">
+                        <a data-toggle="tab" href="#Tab{{tabsIndex}}">{{tab.Title}}</a>
+                    </li>
+                </ul>
+                <div class="event_home">
+                    <div id="Tab{{tabsIndex}}" class="tab-pane fade in {{$index==tabsIndex?active:''}}" ng-repeat="tabItem in TabItems">
+                        <div id="tab.Title">
+                            <div class="publicationItem" ng-show="item.showItem==true" ng-repeat="item in tabItem.childs | orderBy : item.EventDate">
+                                <div>
+                                    <div class="tabdetail mgadd ml5 mt-10">
+                                        <span class="P_icon">
+                                            <img ng-if="subSite=='KSL'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/KSL/PublishingImages/Logos/KSL_icon.png">
+                                            <img ng-if="subSite=='GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                                        </span>
+                                        <span class="P_icon">
+                                            <img ng-if="item.siteType=='Community'" class="P_icon wid-24" ng-src="https://www.shareweb.ch/site/Joint/SiteCollectiohttps://hhhhtnImages/ICONS/siteIcons/Icon_MA.png">
+                                            <img ng-if="item.siteType=='Community' && subSite=='GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                                        </span>
+                                        <span class="P_icon">
+                                            <img ng-if="item.siteType=='Team' && subSite=='KSL'"  class="P_icon wid-24" ng-src="https://www.shareweb.ch/site/Joint/SiteCollectionImages/ICONS/siteIcons/Icon_TM.png">
+                                            <img ng-if="item.siteType=='Team' && subSite=='GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                                        </span>
+                                        <span class="P_icon">
+                                            <img ng-if="item.siteType=='cep' && subSite=='KSL'" class="P_icon wid-24" ng-src="{{baseUrl}}/SiteCollectionImages/ICONS/24/icon_cep.png">
+                                            <img ng-if="item.siteType=='cep' && subSite=='GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                                        </span>
+                                        <span class="P_icon">
+                                            <img ng-if="item.siteType=='Heracles' && subSite=='KSL'" class="P_icon wid-24" ng-src="{{baseUrl}}/SiteCollectionImages/ICONS/siteIcons/Icon_H.png">
+                                            <img ng-if="item.siteType=='Heracles' && subSite=='GmBH'" class="P_icon wid-24" ng-src="https://hhhhteams.sharepoint.com/sites/HHHHTeams/GmBH/PublishingImages/Logos/Icon_GmBH.png">
+                                        </span>
+                                        <img class="flag_icon" ng-src="https://www.shareweb.ch/site/Joint/SiteCollectionImages/ICONS/siteIcons/icon_calendar.png">
+
+                                        <strong>
+                                            <span ng-if="item.EventDate != undefined && item.EventEndDate !=undefined &&  item.EventStartDate == item.EventEndDate && item.Location !=undefined">
+                                                {{item.EventDate | date:'dd MMMM y'}} <span ng-if="item.Location !=undefined && item.IsOnline !=true">in</span> {{item.Location}}
+                                        </strong>
+                                        </span></strong>
+                                        <strong>
+                                            <span ng-show="item.EventStartDate !=undefined && item.EventEndDate !=undefined  && item.EventStartDate != item.EventEndDate && item.Location !=undefined">
+                                                {{item.EventDate | date:'dd MMMM'}} to {{item.EndDate | date:'dd MMMM y'}} <span ng-if="item.Location !=undefined && item.IsOnline !=true">in</span> {{item.Location}}
+                                            </span>
+                                        </strong>
+                                        <strong>
+                                            <span ng-show="item.EventStartDate !=undefined && item.EventEndDate == undefined  && item.EventStartDate !=item.EventEndDate && item.Location !=undefined">
+                                                {{item.EventDate | date:'dd MMMM'}}  <span ng-if="item.Location !=undefined && item.IsOnline !=true">in</span> {{item.Location}}
+                                            </span>
+                                        </strong>
+                                        <strong>
+                                            <span ng-if="item.EventStartDate != undefined && item.EventEndDate !=undefined &&  item.EventStartDate == item.EventEndDate && item.Location ==undefined">
+                                                {{item.EventDate | date:'dd MMMM y'}}
+                                            </span>
+                                        </strong>
+                                        <strong>
+                                            <span ng-if="item.EventStartDate != undefined && item.EventEndDate !=undefined &&  item.EventStartDate != item.EventEndDate && item.Location ==undefined">
+                                                {{item.EventDate | date:'dd MMMM'}} to {{item.EndDate | date:'dd MMMM y'}}
+                                            </span>
+                                        </strong>
+                                        <strong>
+                                            <span ng-if="item.EventDate != undefined && item.EventEndDate ==undefined && item.Location !=undefined">
+                                                {{item.EventDate | date:'dd MMMM y'}} <span ng-if="item.Location !=undefined && item.IsOnline !=true">in</span> {{item.Location}}
+                                            </span>
+                                        </strong>
+                                        <strong>
+                                            <span ng-if="item.EventDate != undefined && item.EventEndDate ==undefined && item.Location ==undefined">
+                                                {{item.EventDate | date:'dd MMMM y'}}
+                                            </span>
+                                        </strong>
+                                        <div class="spotlighttitle">
+                                            <a ng-if="item.Smartname==true" target="_blank" ng-href="{{baseUrl}}/{{subSite }}/SitePages/Event-detail.aspx?ItemID={{item.Id}}&Site={{subSite }}"> {{item.Title}} </a>
+                                            <a ng-if="item.siteType=='Main Site'  && item.Smartname==false" target="_blank" ng-href="{{baseUrl}}/{{subSite }}/SitePages/Event-detail.aspx?ItemID={{item.Id}}&Site={{subSite }}"> {{item.Title}} </a>
+                                            <a ng-if="item.siteType=='Community'  && item.Smartname==false" target="_blank" ng-href="{{baseUrl}}/Pages/Content/event-detail.aspx?ItemID={{item.Id}}&Site=memberarea"> {{item.Title}} </a>
+                                            <a ng-if="item.siteType=='Team'  && item.Smartname==false" target="_blank" ng-href="{{baseUrl}}/Pages/Content/event-detail.aspx?ItemID={{item.Id}}&Site=Team"> {{item.Title}} </a>
+                                            <a ng-if="item.siteType=='cep'  && item.Smartname==false" target="_blank" ng-href="{{baseUrl}}/Pages/content/event-detail.aspx?ItemID={{item.Id}}&Site=cep"> {{item.Title}} </a>
+                                            <a ng-if="item.siteType=='Heracles'  && item.Smartname==false" target="_blank" ng-href="{{baseUrl}}/Pages/content/event-detail.aspx?ItemID={{item.Id}}&Site=Heracles"> {{item.Title}} </a>
+                                            <img ng-if="item.lang=='Fr'" ng-click="ChangeDescription('en-us',item)" class="lIcon" ng-src="{{siteUrl}}/SiteCollectionImages/Flags/languages/icon_language_en.jpg" />
+                                            <img ng-if="(item.lang=='en-us')" ng-click="ChangeDescription('Fr',item)" class="lIcon" ng-src="{{siteUrl}}/SiteCollectionImages/Flags/languages/icon_language_fr.jpg" />
+                                            <a ng-if="isOwner==true" class="hreflink" ng-click="editSharewebItem(item.ID, subSite, 'Event')">
+                                                <img ng-src="/_layouts/images/edititem.gif">
+                                            </a>
+                                            <a ng-if="item.siteType == 'Community' && isOwner==true" class="hreflink" ng-click="editSharewebItem(item.Id, 'memberarea', 'Event')">
+                                                <img ng-src="/_layouts/images/edititem.gif">
+                                            </a>
+                                            <a ng-if="item.siteType == 'Team' && isOwner==true" class="hreflink" ng-click="editSharewebItem(item.Id, 'Team', 'Event')">
+                                                <img ng-src="/_layouts/images/edititem.gif">
+                                            </a>
+                                            <a ng-if="item.siteType == 'cep' && isOwner==true" class="hreflink" ng-click="editSharewebItem(item.Id, 'cep', 'Event')">
+                                                <img ng-src="/_layouts/images/edititem.gif">
+                                            </a> <a ng-if="item.siteType == 'Heracles' && isOwner==true" class="hreflink" ng-click="editSharewebItem(item.Id, 'Heracles', 'Event')">
+                                                <img ng-src="/_layouts/images/edititem.gif">
+                                            </a>
+                                            <!--<a class="hreflink" ng-if="isOwner==true" ng-click="removeItem(item)"> <img ng-src="/_layouts/images/delete.gif"></a>-->
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="item.ItemCover != undefined" class="tabdetail">
+                                    <div id="imagedetail">
+                                        <img class="image" ng-src="{{item.ItemCover}}" title="" />
+                                    </div>
+                                    <div id="marg-p">
+                                        <div>
+                                            <span ng-bind-html="item.EventDescription | trustedHTML"></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div ng-if="item.ItemCover == undefined" class="row pad0 tabdetail">
+                                    <div class="pad10 pt-0">
+                                        <span ng-bind-html="item.EventDescription | trustedHTML"></span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End events tabs -->
+        </div>
+    </div>
+    <div class="col-sm-3 ">
+
+    </div>
+</div>
+
